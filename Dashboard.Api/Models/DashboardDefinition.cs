@@ -11,7 +11,7 @@ namespace Dashboard.Api.Models
     {
         public string Name { get; set; }
         public string Title { get; set; }
-        public List<DashboardTag> Tags { get; set; }
+        public List<DashboardTag> Tags { get; set; } = new List<DashboardTag>();
         public int Position { get; set; }
 
         public void UpdateFrom(DashboardDefinition fromDefinition)
