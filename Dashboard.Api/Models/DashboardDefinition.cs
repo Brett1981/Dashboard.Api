@@ -15,8 +15,7 @@ namespace Dashboard.Api.Models
 
         public void UpdateFrom(DashboardDefinition fromDefinition)
         {
-            base.UpdateFrom(fromDefinition);
-
+            Position = fromDefinition.Position;
             Name = fromDefinition.Name;
             Title = fromDefinition.Title;
 
