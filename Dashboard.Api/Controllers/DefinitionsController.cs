@@ -47,7 +47,7 @@ namespace Dashboard.Api.Controllers
         public async Task<ActionResult<DashboardDefinition>> CreateDefinitionAsync([FromBody] DashboardDefinition definition)
         {
             var definitions = await _context.Definitions.GetAsync();
-            PositionAdjustor.AdjustForCreate(definition, definitions.ToList<ISortable>());
+            PositionAdjuster.AdjustForCreate(definition, definitions.ToList<ISortable>());
 
             await _context.Definitions.AddAsync(definition);
             await _context.SaveChangesAsync();
@@ -67,7 +67,7 @@ namespace Dashboard.Api.Controllers
             }
 
             var definitions = await _context.Definitions.GetAsync();
-            PositionAdjustor.AdjustForUpdate(definition, definitions.ToList<ISortable>(), current);
+            PositionAdjuster.AdjustForUpdate(definition, definitions.ToList<ISortable>(), current);
 
             current.UpdateFrom(definition);
             _context.Definitions.Update(current);
@@ -90,7 +90,7 @@ namespace Dashboard.Api.Controllers
             else
             {
                 var lists = await _context.Definitions.GetAsync();
-                PositionAdjustor.AdjustForDelete(definition, lists.ToList<ISortable>());
+                PositionAdjuster.AdjustForDelete(definition, lists.ToList<ISortable>());
 
                 _context.Definitions.Delete(definition);
                 await _context.SaveChangesAsync();
