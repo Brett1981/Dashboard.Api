@@ -8,12 +8,17 @@ namespace Dashboard.Api.Models
 {
     public class DashboardDefinition : EntityBase, ISortable
     {
+        public string Name { get; set; }
+        public string Title { get; set; }
         public List<DashboardTag> Tags { get; set; }
         public int Position { get; set; }
 
         public void UpdateFrom(DashboardDefinition fromDefinition)
         {
             base.UpdateFrom(fromDefinition);
+
+            Name = fromDefinition.Name;
+            Title = fromDefinition.Title;
 
             Tags.Clear();
             Tags.AddRange(fromDefinition.Tags);
