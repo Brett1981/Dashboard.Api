@@ -25,7 +25,7 @@ namespace Dashboard.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<DashboardDefinition>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<DashboardDefinition>>> GetAllDefinitionsAsync()
         {
-            return await _context.Definitions.GetAsync(d => d.Tags);
+            return await _context.Definitions.GetAsync(d => d.Tiles);
         }
 
         [HttpGet("{id}", Name = "GetDefinition")]
@@ -33,7 +33,7 @@ namespace Dashboard.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<DashboardDefinition>> GetDefinitionAsync(int id)
         {
-            var definition = await _context.Definitions.GetAsync(id, d => d.Tags);
+            var definition = await _context.Definitions.GetAsync(id, d => d.Tiles);
             if (definition == null)
             {
                 return NotFound();
@@ -60,7 +60,7 @@ namespace Dashboard.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<DashboardDefinition>> UpdateDefinitionAsync(int id, [FromBody] DashboardDefinition definition)
         {
-            var current = await _context.Definitions.GetAsync(id, d => d.Tags);
+            var current = await _context.Definitions.GetAsync(id, d => d.Tiles);
             if (current == null)
             {
                 return NotFound();

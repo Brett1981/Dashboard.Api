@@ -7,20 +7,29 @@ using System.Threading.Tasks;
 
 namespace Dashboard.Api.Models
 {
-    public class DashboardDefinition : EntityBase, ISortable, IUpdatable<DashboardDefinition>
+    public class DashboardDefinition : DashboardElement, IUpdatable<DashboardDefinition>
     {
-        public string Name { get; set; }
         public string Title { get; set; }
-        public List<DashboardTag> Tags { get; set; } = new List<DashboardTag>();
-        public int Position { get; set; }
+        public int Columns { get; set; }
+        public List<DashboardTile> Tiles { get; set; } = new List<DashboardTile>();
 
         public void UpdateFrom(DashboardDefinition fromDefinition)
         {
-            Position = fromDefinition.Position;
-            Name = fromDefinition.Name;
-            Title = fromDefinition.Title;
+            base.UpdateFrom(fromDefinition);
 
-            CollectionUpdater<DashboardTag>.Update(Tags, fromDefinition.Tags);
+            Title = fromDefinition.Title;
+            Columns = fromDefinition.Columns;
+            CollectionUpdater<DashboardTile>.Update(Tiles, fromDefinition.Tiles);
+        }
+
+        public DashboardElement ToElement()
+        {
+            return new DashboardElement()
+            {
+                Id = Id,
+                Name = Name,
+                Position = Position
+            };
         }
     }
 }
