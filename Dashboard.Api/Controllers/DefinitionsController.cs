@@ -25,7 +25,12 @@ namespace Dashboard.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<DashboardDefinition>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<DashboardDefinition>>> GetAllDefinitionsAsync()
         {
-            return await _context.Definitions.GetAsync(d => d.Tiles);
+            var definitions = await _context.Definitions.GetAsync(d => d.Tiles);
+
+            // sort tiles by position
+            definitions.ForEach(d => d.Tiles = d.Tiles.OrderBy(t => t.Position).ToList());
+
+            return definitions;
         }
 
         [HttpGet("{id}", Name = "GetDefinition")]
@@ -33,10 +38,22 @@ namespace Dashboard.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<DashboardDefinition>> GetDefinitionAsync(int id)
         {
-            var definition = await _context.Definitions.GetAsync(id, d => d.Tiles);
+            var definition = await FetchDashboardAsync(id);
             if (definition == null)
             {
                 return NotFound();
+            }
+
+            return definition;
+        }
+
+        private async Task<DashboardDefinition> FetchDashboardAsync(int id)
+        {
+            var definition = await _context.Definitions.GetAsync(id, d => d.Tiles);
+            if (definition != null)
+            {
+                // order tiles by position
+                definition.Tiles = definition.Tiles.OrderBy(t => t.Position).ToList();
             }
 
             return definition;
@@ -47,7 +64,7 @@ namespace Dashboard.Api.Controllers
         public async Task<ActionResult<DashboardDefinition>> CreateDefinitionAsync([FromBody] DashboardDefinition definition)
         {
             var definitions = await _context.Definitions.GetAsync();
-            PositionAdjuster.AdjustForCreate(definition, definitions.ToList<ISortable>());
+            PositionAdjuster.AdjustForCreate(definition, definitions.ToList<ISortable>(), definition.Tiles.ToList<ISortable>());
 
             await _context.Definitions.AddAsync(definition);
             await _context.SaveChangesAsync();
@@ -60,14 +77,14 @@ namespace Dashboard.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<DashboardDefinition>> UpdateDefinitionAsync(int id, [FromBody] DashboardDefinition definition)
         {
-            var current = await _context.Definitions.GetAsync(id, d => d.Tiles);
+            var current = await FetchDashboardAsync(id);
             if (current == null)
             {
                 return NotFound();
             }
 
             var definitions = await _context.Definitions.GetAsync();
-            PositionAdjuster.AdjustForUpdate(definition, definitions.ToList<ISortable>(), current);
+            PositionAdjuster.AdjustForUpdate(definition, definitions.ToList<ISortable>(), current, definition.Tiles.ToList<ISortable>());
 
             current.UpdateFrom(definition);
             _context.Definitions.Update(current);
