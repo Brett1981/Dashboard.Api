@@ -13,8 +13,8 @@ namespace Dashboard.Api.Models
         public bool Important { get; set; }
         public int ColumnSpan { get; set; }
         public int RowSpan { get; set; }
-        public int DashboardDefinitionId { get; set; }
         public int Position { get; set; }
+        public int DashboardDefinitionId { get; set; }
 
         public void UpdateFrom(DashboardTile fromTag)
         {
