@@ -47,7 +47,7 @@ namespace Dashboard.Api.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(DashboardElement), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<DashboardElement>> UpdateListElementAsync(int id, [FromBody] DashboardElement element)
+        public async Task<ActionResult<DashboardElement>> UpdateElementAsync(int id, [FromBody] DashboardElement element)
         {
             var current = await _context.Definitions.GetAsync(id);
             if (current == null)
