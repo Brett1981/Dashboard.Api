@@ -24,7 +24,6 @@ namespace Dashboard.Api.Models
             OffsetFromNow = timePeriod.OffsetFromNow;
             StartTime = timePeriod.StartTime;
             EndTime = timePeriod.EndTime;
-            DashboardDefinitionId = timePeriod.DashboardDefinitionId;
         }
     }
 }

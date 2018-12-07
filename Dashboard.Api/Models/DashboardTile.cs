@@ -23,7 +23,6 @@ namespace Dashboard.Api.Models
             ColumnSpan = fromTag.ColumnSpan;
             RowSpan = fromTag.RowSpan;
             Position = fromTag.Position;
-            DashboardDefinitionId = fromTag.DashboardDefinitionId;
         }
     }
 }
