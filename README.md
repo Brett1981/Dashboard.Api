@@ -5,11 +5,12 @@ Dashboard storage and retrieval services.
 
 - Custom ordering of dashboard definitions.
 - Dashboard definitions contain:
-  - A name and title.
+  - A name.
   - An ordered collection of tiles.
   - A layout specification for tiles.
-  - Data points (tags) for each tile.
-  - A time frame for requesting tag data (future).
+  - Data points (tags or documents) for each tile.
+  - A time frame for requesting tile data.
+  - An extensible property bag for all visual properties (future).
 
 ##### Implementation:
 

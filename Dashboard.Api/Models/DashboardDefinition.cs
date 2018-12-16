@@ -9,7 +9,6 @@ namespace Dashboard.Api.Models
 {
     public class DashboardDefinition : DashboardElement, IUpdatable<DashboardDefinition>
     {
-        public string Title { get; set; }
         public int Columns { get; set; }
         public RequestType RequestType { get; set; }
         public DateTime? ValueAtTimeTarget { get; set; }
@@ -20,7 +19,6 @@ namespace Dashboard.Api.Models
         {
             base.UpdateFrom(fromDefinition);
 
-            Title = fromDefinition.Title;
             Columns = fromDefinition.Columns;
             RequestType = fromDefinition.RequestType;
             ValueAtTimeTarget = fromDefinition.ValueAtTimeTarget;

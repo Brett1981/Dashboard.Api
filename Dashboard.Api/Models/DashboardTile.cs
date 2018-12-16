@@ -9,7 +9,7 @@ namespace Dashboard.Api.Models
 {
     public class DashboardTile : EntityBase, ISortable, IUpdatable<DashboardTile>
     {
-        public int TagId { get; set; }
+        public int SourceId { get; set; }
         public bool Important { get; set; }
         public int ColumnSpan { get; set; }
         public int RowSpan { get; set; }
@@ -18,7 +18,7 @@ namespace Dashboard.Api.Models
 
         public void UpdateFrom(DashboardTile fromTag)
         {
-            TagId = fromTag.TagId;
+            SourceId = fromTag.SourceId;
             Important = fromTag.Important;
             ColumnSpan = fromTag.ColumnSpan;
             RowSpan = fromTag.RowSpan;
