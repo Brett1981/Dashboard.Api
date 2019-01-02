@@ -39,15 +39,9 @@ namespace Dashboard.Api
                     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 });
 
-            // read connection string from configuration
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-
             // register database context
             services.AddDbContext<DashboardContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // add dependency injected data services
             services.AddScoped<IDashboardRepositoryContext, DashboardRepositoryContext>();
