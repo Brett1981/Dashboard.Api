@@ -14,6 +14,7 @@ namespace Dashboard.Api.Models
         public DateTime? ValueAtTimeTarget { get; set; }
         public TimePeriod HistoryTimePeriod { get; set; }
         public List<DashboardTile> Tiles { get; set; } = new List<DashboardTile>();
+        public List<DashboardSetting> Settings { get; set; } = new List<DashboardSetting>();
 
         public void UpdateFrom(DashboardDefinition fromDefinition)
         {
@@ -35,6 +36,7 @@ namespace Dashboard.Api.Models
                 HistoryTimePeriod.UpdateFrom(fromDefinition.HistoryTimePeriod);
             }
             CollectionUpdater<DashboardTile>.Update(Tiles, fromDefinition.Tiles);
+            CollectionUpdater<DashboardSetting>.Update(Settings, fromDefinition.Settings);
         }
 
         public DashboardElement ToElement()

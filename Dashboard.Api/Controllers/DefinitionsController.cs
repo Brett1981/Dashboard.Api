@@ -25,7 +25,7 @@ namespace Dashboard.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<DashboardDefinition>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<DashboardDefinition>>> GetAllDefinitionsAsync()
         {
-            var definitions = await _context.Definitions.GetAsync(d => d.Tiles, d => d.HistoryTimePeriod);
+            var definitions = await _context.Definitions.GetAsync(d => d.HistoryTimePeriod, d => d.Tiles, d => d.Settings);
 
             // sort tiles by position
             definitions.ForEach(d => d.Tiles = d.Tiles.OrderBy(t => t.Position).ToList());
@@ -49,7 +49,7 @@ namespace Dashboard.Api.Controllers
 
         private async Task<DashboardDefinition> FetchDashboardAsync(int id)
         {
-            var definition = await _context.Definitions.GetAsync(id, d => d.Tiles, d => d.HistoryTimePeriod);
+            var definition = await _context.Definitions.GetAsync(id, d => d.HistoryTimePeriod, d => d.Tiles, d => d.Settings);
             if (definition != null)
             {
                 // order tiles by position
