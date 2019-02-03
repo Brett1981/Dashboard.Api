@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Dashboard.Api.Models
+namespace Dashboard.Api.Services
 {
     public class DashboardSortingRepository<T> : DbSortingRepository<T> where T : EntityBase, ISortable
     {
-        public DashboardSortingRepository(DashboardContext context)
+        public DashboardSortingRepository(DashboardDbContext context)
             : base(context)
         {
         }

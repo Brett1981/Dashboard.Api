@@ -2,12 +2,13 @@
 using Api.Common.Repository;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Dashboard.Api.Models
 {
-    public class DashboardDefinition : DashboardElement, IUpdatable<DashboardDefinition>
+    public class DashboardDefinition : DefinitionElement, IUpdatable<DashboardDefinition>
     {
         public int Columns { get; set; }
         public RequestType RequestType { get; set; }
@@ -39,13 +40,14 @@ namespace Dashboard.Api.Models
             CollectionUpdater<DashboardSetting>.Update(Settings, fromDefinition.Settings);
         }
 
-        public DashboardElement ToElement()
+        public DefinitionElement ToElement()
         {
-            return new DashboardElement()
+            return new DefinitionElement()
             {
                 Id = Id,
                 Name = Name,
-                Position = Position
+                Position = Position,
+                DashboardFolderId = DashboardFolderId
             };
         }
     }

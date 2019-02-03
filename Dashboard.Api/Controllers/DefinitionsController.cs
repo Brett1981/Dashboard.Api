@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Api.Common;
 using Api.Common.Repository;
 using Dashboard.Api.Models;
+using Dashboard.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dashboard.Api.Controllers
@@ -63,7 +64,7 @@ namespace Dashboard.Api.Controllers
         [ProducesResponseType(typeof(DashboardDefinition), (int)HttpStatusCode.Created)]
         public async Task<ActionResult<DashboardDefinition>> CreateDefinitionAsync([FromBody] DashboardDefinition definition)
         {
-            var definitions = await _context.Definitions.GetAsync();
+            var definitions = await _context.Definitions.GetAsync(d => d.DashboardFolderId == definition.DashboardFolderId);
             PositionAdjuster.AdjustForCreate(definition, definitions.ToList<ISortable>(), definition.Tiles.ToList<ISortable>());
 
             await _context.Definitions.AddAsync(definition);
@@ -83,7 +84,7 @@ namespace Dashboard.Api.Controllers
                 return NotFound();
             }
 
-            var definitions = await _context.Definitions.GetAsync();
+            var definitions = await _context.Definitions.GetAsync(d => d.DashboardFolderId == definition.DashboardFolderId);
             PositionAdjuster.AdjustForUpdate(definition, definitions.ToList<ISortable>(), current, definition.Tiles.ToList<ISortable>());
 
             current.UpdateFrom(definition);
@@ -106,7 +107,7 @@ namespace Dashboard.Api.Controllers
             }
             else
             {
-                var lists = await _context.Definitions.GetAsync();
+                var lists = await _context.Definitions.GetAsync(d => d.DashboardFolderId == definition.DashboardFolderId);
                 PositionAdjuster.AdjustForDelete(definition, lists.ToList<ISortable>());
 
                 _context.Definitions.Delete(definition);

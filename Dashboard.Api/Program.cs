@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dashboard.Api.Models;
+using Dashboard.Api.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +25,7 @@ namespace Dashboard.Api
 
                 try
                 {
-                    var context = services.GetRequiredService<DashboardContext>();
+                    var context = services.GetRequiredService<DashboardDbContext>();
                     context.Database.EnsureCreated();
                 }
                 catch (Exception ex)
