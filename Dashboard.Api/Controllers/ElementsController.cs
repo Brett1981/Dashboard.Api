@@ -80,10 +80,18 @@ namespace Dashboard.Api.Controllers
 
         [HttpGet("folders/{id}/definitions")]
         [ProducesResponseType(typeof(IEnumerable<DefinitionElement>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<IEnumerable<DefinitionElement>>> GetAllDefinitionElementsAsync(int id)
         {
-            var definitions = await _context.Definitions.GetAsync(d => d.DashboardFolderId == id);
-            return definitions.Select(d => d.ToElement()).ToList();
+            var folder = await FetchFolderAsync(id);
+            if (folder == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return folder.Definitions;
+            }
         }
 
         [HttpPut("definitions/{id}")]
