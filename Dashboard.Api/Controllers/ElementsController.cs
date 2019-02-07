@@ -104,9 +104,23 @@ namespace Dashboard.Api.Controllers
             {
                 return NotFound();
             }
-     
-            var definitions = await _context.Definitions.GetAsync();
-            PositionAdjuster.AdjustForUpdate(element, definitions.ToList<ISortable>(), current);
+
+            if (current.DashboardFolderId == element.DashboardFolderId)
+            {
+                // not reparenting, adjust positions 
+                var newPeers = await _context.Definitions.GetAsync(d => d.DashboardFolderId == element.DashboardFolderId);
+                PositionAdjuster.AdjustForUpdate(element, newPeers.ToList<ISortable>(), current);
+            }
+            else
+            {
+                // we are reparenting, adjust old peer positions
+                var oldPeers = await _context.Definitions.GetAsync(d => d.DashboardFolderId == current.DashboardFolderId);
+                PositionAdjuster.AdjustForDelete(current, oldPeers.ToList<ISortable>());
+
+                // and new peer positions
+                var newPeers = await _context.Definitions.GetAsync(d => d.DashboardFolderId == element.DashboardFolderId);
+                PositionAdjuster.AdjustForCreate(element, newPeers.ToList<ISortable>());
+            }
 
             current.UpdateFrom(element);
 

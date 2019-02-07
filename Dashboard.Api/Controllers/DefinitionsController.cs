@@ -84,10 +84,25 @@ namespace Dashboard.Api.Controllers
                 return NotFound();
             }
 
-            var definitions = await _context.Definitions.GetAsync(d => d.DashboardFolderId == definition.DashboardFolderId);
-            PositionAdjuster.AdjustForUpdate(definition, definitions.ToList<ISortable>(), current, definition.Tiles.ToList<ISortable>());
+            if (current.DashboardFolderId == definition.DashboardFolderId)
+            {
+                // not reparenting, adjust positions 
+                var newPeers = await _context.Definitions.GetAsync(d => d.DashboardFolderId == definition.DashboardFolderId);
+                PositionAdjuster.AdjustForUpdate(definition, newPeers.ToList<ISortable>(), current, definition.Tiles.ToList<ISortable>());
+            }
+            else
+            {
+                // we are reparenting, adjust old peer positions
+                var oldPeers = await _context.Definitions.GetAsync(d => d.DashboardFolderId == current.DashboardFolderId);
+                PositionAdjuster.AdjustForDelete(current, oldPeers.ToList<ISortable>());
+
+                // and new peer positions
+                var newPeers = await _context.Definitions.GetAsync(d => d.DashboardFolderId == definition.DashboardFolderId);
+                PositionAdjuster.AdjustForCreate(definition, newPeers.ToList<ISortable>(), definition.Tiles.ToList<ISortable>());
+            }
 
             current.UpdateFrom(definition);
+
             _context.Definitions.Update(current);
             await _context.SaveChangesAsync();
 
