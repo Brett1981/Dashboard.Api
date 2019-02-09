@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dashboard.Api.Models
 {
-    public class DashboardFolder : DashboardElement, IUpdatable<DashboardFolder>
+    public class DashboardFolder : FolderBase, IUpdatable<DashboardFolder>
     {
         public List<DashboardDefinition> Definitions { get; set; } = new List<DashboardDefinition>();
 
@@ -24,6 +24,8 @@ namespace Dashboard.Api.Models
                 Id = Id,
                 Name = Name,
                 Position = Position,
+                KioskInterval = KioskInterval,
+                KioskTimeScale = KioskTimeScale,
                 DefaultDefinitionId = Definitions.Count > 0 ? Definitions[0].Id : 0
             };
         }

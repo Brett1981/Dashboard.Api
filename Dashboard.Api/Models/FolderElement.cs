@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dashboard.Api.Models
 {
-    public class FolderElement : DashboardElement, IUpdatable<FolderElement>
+    public class FolderElement : FolderBase, IUpdatable<FolderElement>
     {
         public int DefaultDefinitionId { get; set; }
 
